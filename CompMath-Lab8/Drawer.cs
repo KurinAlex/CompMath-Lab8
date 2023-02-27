@@ -1,22 +1,29 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace CompMath_Lab6;
+namespace CompMath_Lab8;
 
 public static class Drawer
 {
 	private static string Center(this string s, int length)
 		=> s.PadLeft((length - s.Length) / 2 + s.Length).PadRight(length);
 
-	public static void DrawTable(
-		double[] xData,
+	public static string GetTableString(
+		IEnumerable<double> xData,
 		string xLabel,
-		string xFormat,
-		Dictionary<string, double[]> yData,
+		Dictionary<string, IEnumerable<double>> yData,
 		string yAreaLabel,
-		string yFormat)
+		int precision)
 	{
-		int n = xData.Length;
-		if (yData.Values.Any(d => d.Length != n))
+		if (precision < 0)
+		{
+			throw new ArgumentOutOfRangeException(nameof(precision), "Precision must be non-negative");
+		}
+		
+		int n = xData.Count();
+		if (yData.Values.Any(d => d.Count() != n))
 		{
 			throw new ArgumentException("Wrong entries count in y data array", nameof(yData));
 		}
@@ -28,12 +35,12 @@ public static class Drawer
 		var id = idStrings.Select(x => x.Center(idColumnWidth)).ToArray();
 
 		// x column data
-		var xStrings = xData.Select(x => x.ToString(xFormat));
+		var xStrings = xData.Select(x => x.ToString($"F{precision}"));
 		int xColumnWidth = xStrings.Append(xLabel).Max(x => x.Length);
 		var x = xStrings.Select(x => x.Center(xColumnWidth)).ToArray();
 
 		// y columns data
-		var yStrings = yData.ToDictionary(p => p.Key, p => p.Value.Select(y => y.ToString(yFormat)));
+		var yStrings = yData.ToDictionary(p => p.Key, p => p.Value.Select(y => y.ToString($"E{precision}")));
 		var yColumnsWidth = yStrings.Select(col => col.Value.Append(col.Key).Max(y => y.Length));
 		int yAreaWidth = yColumnsWidth.Sum() + yData.Count - 1;
 		var y = yStrings
@@ -67,6 +74,6 @@ public static class Drawer
 		}
 		sb.AppendFormat("└{0}┴{1}┴{2}┘", idRowDivider, xRowDivider, string.Join('┴', yRowsDividers));
 
-		Console.WriteLine(sb);
+		return sb.ToString();
 	}
 }

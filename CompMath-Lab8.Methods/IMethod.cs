@@ -1,4 +1,4 @@
-﻿namespace CompMath_Lab8;
+﻿namespace CompMath_Lab8.Methods;
 
 public interface IMethod
 {
