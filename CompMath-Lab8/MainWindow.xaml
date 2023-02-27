@@ -28,10 +28,12 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1" Grid.Column="1">
-            <Label Content="start h:"></Label>
+            <Label Content="Start h:"></Label>
             <TextBox x:Name="startHInput" Text="0,1" TextChanged="UpdateEHModel" />
-            <Label Content="end h:"></Label>
+            <Label Content="End h:"></Label>
             <TextBox x:Name="endHInput" Text="0,3" TextChanged="UpdateEHModel" />
+            <Label Content="Norm:"></Label>
+            <ComboBox x:Name="normChoice" SelectionChanged="UpdateEHModel"/>
             <Button Content="Download data" Click="ButtonEHClick"/>
         </StackPanel>
     </Grid>

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 
 using OxyPlot;
@@ -12,16 +11,16 @@ namespace CompMath_Lab8;
 
 public class ViewModel
 {
-	const double X0 = 1.0;
-	const double Y0 = -5.0 / 6.0;
+	private const double X0 = 1.0;
+	private const double Y0 = -5.0 / 6.0;
 
-	const int N = 100;
-	const double W = 1.0;
+	private const int N = 100;
+	private const double W = 1.0;
 
-	static double F(double x, double y) => x * x * x - 2.0 * y / x;
-	static double TrueF(double x) => x * x * x * x / 6.0 - 1.0 / (x * x);
+	private static double F(double x, double y) => x * x * x - 2.0 * y / x;
+	private static double TrueF(double x) => x * x * x * x / 6.0 - 1.0 / (x * x);
 
-	static readonly IMethod[] methods = { new RungeKuttaMethod(), new AdamsMoultonMethod() };
+	private static readonly IMethod[] methods = { new RungeKuttaMethod(), new AdamsMoultonMethod() };
 
 	public ViewModel()
 	{
@@ -31,11 +30,6 @@ public class ViewModel
 
 	public PlotModel EXModel { get; init; }
 	public PlotModel EHModel { get; init; }
-
-	private static double Norm(IEnumerable<double> values)
-	{
-		return values.Max(v => Math.Abs(v));
-	}
 
 	private PlotModel InitPlotModel(string title)
 	{
@@ -53,10 +47,7 @@ public class ViewModel
 
 		return model;
 	}
-	private void InitSeries(
-		PlotModel model,
-		IEnumerable<double> xArr,
-		Dictionary<string, IEnumerable<double>> ySeries)
+	private void InitSeries(PlotModel model, IEnumerable<double> xArr, Dictionary<string, IEnumerable<double>> ySeries)
 	{
 		foreach (var ySer in ySeries)
 		{
@@ -89,7 +80,7 @@ public class ViewModel
 		}
 		return (xArr, ySeries);
 	}
-	public (IEnumerable<double>, Dictionary<string, IEnumerable<double>>) GetEHData(double minH, double maxH)
+	public (IEnumerable<double>, Dictionary<string, IEnumerable<double>>) GetEHData(double minH, double maxH, Norm norm)
 	{
 		double stepH = (maxH - minH) / (N - 1);
 
@@ -99,7 +90,9 @@ public class ViewModel
 		foreach (var method in methods)
 		{
 			var e = hArr.Select(h => method.Solve(F, X0, Y0, W, h).Select((y, i) => y - TrueF(X0 + i * h)));
-			var eSer = e.Select(e => Norm(e));
+			var eSer = norm == Norm.Uniform
+				? e.Select(e => Norms.ComputeUniformNorm(e))
+				: e.Zip(hArr).Select(t => Norms.ComputeL2Norm(t.First, t.Second));
 			eSeries.Add(method.Name, eSer);
 		}
 		return (hArr, eSeries);
@@ -111,10 +104,10 @@ public class ViewModel
 		var (xArr, ySeries) = GetEXData(h);
 		InitSeries(EXModel, xArr, ySeries);
 	}
-	public void UpdateEHModel(double minH, double maxH)
+	public void UpdateEHModel(double minH, double maxH, Norm norm)
 	{
 		EHModel.Series.Clear();
-		var (hArr, eSeries) = GetEHData(minH, maxH);
+		var (hArr, eSeries) = GetEHData(minH, maxH, norm);
 		InitSeries(EHModel, hArr, eSeries);
 	}
 }

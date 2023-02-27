@@ -21,7 +21,7 @@ public static class Drawer
 		{
 			throw new ArgumentOutOfRangeException(nameof(precision), "Precision must be non-negative");
 		}
-		
+
 		int n = xData.Count();
 		if (yData.Values.Any(d => d.Count() != n))
 		{
