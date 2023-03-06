@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace CompMath_Lab8;
+﻿namespace CompMath_Lab8.Utilities;
 
 public static class Norms
 {

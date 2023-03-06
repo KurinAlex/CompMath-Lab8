@@ -6,8 +6,12 @@ using OxyPlot.Series;
 using OxyPlot.Legends;
 
 using CompMath_Lab8.Methods;
+using CompMath_Lab8.Utilities;
 
 namespace CompMath_Lab8;
+
+using Series = IEnumerable<double>;
+using SeriesDictionary = Dictionary<string, IEnumerable<double>>;
 
 public class ViewModel
 {
@@ -15,7 +19,6 @@ public class ViewModel
 	private const double Y0 = -5.0 / 6.0;
 
 	private const int N = 100;
-	private const double W = 1.0;
 
 	private static double F(double x, double y) => x * x * x - 2.0 * y / x;
 	private static double TrueF(double x) => x * x * x * x / 6.0 - 1.0 / (x * x);
@@ -47,7 +50,7 @@ public class ViewModel
 
 		return model;
 	}
-	private void InitSeries(PlotModel model, IEnumerable<double> xArr, Dictionary<string, IEnumerable<double>> ySeries)
+	private void InitSeries(PlotModel model, Series xArr, SeriesDictionary ySeries)
 	{
 		foreach (var ySer in ySeries)
 		{
@@ -63,33 +66,33 @@ public class ViewModel
 		}
 	}
 
-	public (IEnumerable<double>, Dictionary<string, IEnumerable<double>>) GetEXData(double h)
+	public (Series, SeriesDictionary) GetEXData(double w, double h)
 	{
-		int n = (int)(W / h) + 1;
+		int n = (int)(w / h) + 1;
 
 		var xArr = Enumerable.Range(0, n).Select(k => X0 + k * h);
-		var ySeries = new Dictionary<string, IEnumerable<double>>(methods.Length)
+		var ySeries = new SeriesDictionary(methods.Length + 1)
 		{
 			["True"] = xArr.Select(x => TrueF(x))
 		};
 
 		foreach (var method in methods)
 		{
-			var ySer = method.Solve(F, X0, Y0, W, h);
+			var ySer = method.Solve(F, X0, Y0, w, h);
 			ySeries.Add(method.Name, ySer);
 		}
 		return (xArr, ySeries);
 	}
-	public (IEnumerable<double>, Dictionary<string, IEnumerable<double>>) GetEHData(double minH, double maxH, Norm norm)
+	public (Series, SeriesDictionary) GetEHData(double w, double minH, double maxH, Norm norm)
 	{
 		double stepH = (maxH - minH) / (N - 1);
 
 		var hArr = Enumerable.Range(0, N).Select(k => minH + k * stepH);
-		var eSeries = new Dictionary<string, IEnumerable<double>>(methods.Length);
+		var eSeries = new SeriesDictionary(methods.Length);
 
 		foreach (var method in methods)
 		{
-			var e = hArr.Select(h => method.Solve(F, X0, Y0, W, h).Select((y, i) => y - TrueF(X0 + i * h)));
+			var e = hArr.Select(h => method.Solve(F, X0, Y0, w, h).Select((y, i) => y - TrueF(X0 + i * h)));
 			var eSer = norm == Norm.Uniform
 				? e.Select(e => Norms.ComputeUniformNorm(e))
 				: e.Zip(hArr).Select(t => Norms.ComputeL2Norm(t.First, t.Second));
@@ -98,16 +101,16 @@ public class ViewModel
 		return (hArr, eSeries);
 	}
 
-	public void UpdateEXModel(double h)
+	public void UpdateEXModel(double w, double h)
 	{
 		EXModel.Series.Clear();
-		var (xArr, ySeries) = GetEXData(h);
+		var (xArr, ySeries) = GetEXData(w, h);
 		InitSeries(EXModel, xArr, ySeries);
 	}
-	public void UpdateEHModel(double minH, double maxH, Norm norm)
+	public void UpdateEHModel(double w, double minH, double maxH, Norm norm)
 	{
 		EHModel.Series.Clear();
-		var (hArr, eSeries) = GetEHData(minH, maxH, norm);
+		var (hArr, eSeries) = GetEHData(w, minH, maxH, norm);
 		InitSeries(EHModel, hArr, eSeries);
 	}
 }

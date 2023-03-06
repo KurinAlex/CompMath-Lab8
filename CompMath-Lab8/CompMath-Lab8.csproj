@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CompMath-Lab8.Methods\CompMath-Lab8.Methods.csproj" />
+    <ProjectReference Include="..\CompMath-Lab8.Utilities\CompMath-Lab8.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

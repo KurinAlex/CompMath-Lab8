@@ -17,13 +17,9 @@ public class AdamsMoultonMethod : IMethod
 		}
 
 		int n = (int)(w / h) + 1;
-		if (n < 4)
-		{
-			throw new ArgumentOutOfRangeException(nameof(w));
-		}
 
 		var y = new double[n];
-		var startY = new RungeKuttaMethod().Solve(f, x0, y0, 3.0 * h, h);
+		var startY = new RungeKuttaMethod().Solve(f, x0, y0, Math.Min(3.0 * h, w), h);
 		startY.CopyTo(y, 0);
 
 		for (int i = 3; i < n; i++)

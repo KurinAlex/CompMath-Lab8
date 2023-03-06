@@ -5,7 +5,9 @@ VisualStudioVersion = 17.4.33403.182
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompMath-Lab8", "CompMath-Lab8\CompMath-Lab8.csproj", "{3CD12F86-3F12-47F9-8A8B-4CF769AE4C43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompMath-Lab8.Methods", "CompMath-Lab8.Methods\CompMath-Lab8.Methods.csproj", "{B75A6B68-EDC1-48B0-81F1-82D892EF9122}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompMath-Lab8.Methods", "CompMath-Lab8.Methods\CompMath-Lab8.Methods.csproj", "{B75A6B68-EDC1-48B0-81F1-82D892EF9122}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompMath-Lab8.Utilities", "CompMath-Lab8.Utilities\CompMath-Lab8.Utilities.csproj", "{05030EBD-5C22-4D9F-A5A3-59F9F1A00B15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{B75A6B68-EDC1-48B0-81F1-82D892EF9122}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B75A6B68-EDC1-48B0-81F1-82D892EF9122}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B75A6B68-EDC1-48B0-81F1-82D892EF9122}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05030EBD-5C22-4D9F-A5A3-59F9F1A00B15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05030EBD-5C22-4D9F-A5A3-59F9F1A00B15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05030EBD-5C22-4D9F-A5A3-59F9F1A00B15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05030EBD-5C22-4D9F-A5A3-59F9F1A00B15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

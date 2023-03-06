@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:oxy="http://oxyplot.org/wpf"
-        xmlns:local="clr-namespace:CompMath_Lab8"
         mc:Ignorable="d"
         Title="Lab 8" Height="800" Width="800" Left="0" Top="0">
     <Grid>
@@ -18,23 +17,31 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <oxy:PlotView x:Name="exPlot" />
-        <oxy:PlotView x:Name="ehPlot" Grid.Row="1" />
+        <oxy:PlotView x:Name="exPlot"/>
+        <oxy:PlotView x:Name="ehPlot" Grid.Row="1"/>
 
-        <StackPanel Grid.Column="1">
-            <Label Content="h:"></Label>
-            <TextBox x:Name="hInput" Text="0,01" TextChanged="UpdateEXModel" />
-            <Button Content="Download data" Click="ButtonEXClick"/>
-        </StackPanel>
+        <GroupBox Header="e(x) plot data" Grid.Column="1">
+            <StackPanel>
+                <Button Content="Download data" Click="DownloadEXData"/>
+                <TextBlock Text="w:"/>
+                <TextBox x:Name="w1Input" Text="1" TextChanged="UpdateEXModel"/>
+                <TextBlock Text="h:"/>
+                <TextBox x:Name="hInput" Text="0,01" TextChanged="UpdateEXModel"/>
+            </StackPanel>
+        </GroupBox>
 
-        <StackPanel Grid.Row="1" Grid.Column="1">
-            <Label Content="Start h:"></Label>
-            <TextBox x:Name="startHInput" Text="0,1" TextChanged="UpdateEHModel" />
-            <Label Content="End h:"></Label>
-            <TextBox x:Name="endHInput" Text="0,3" TextChanged="UpdateEHModel" />
-            <Label Content="Norm:"></Label>
-            <ComboBox x:Name="normChoice" SelectionChanged="UpdateEHModel"/>
-            <Button Content="Download data" Click="ButtonEHClick"/>
-        </StackPanel>
+        <GroupBox Header="e(h) plot data" Grid.Row="1" Grid.Column="1">
+            <StackPanel>
+                <Button Content="Download data" Click="DownloadEHData"/>
+                <TextBlock Text="w:"/>
+                <TextBox x:Name="w2Input" Text="1" TextChanged="UpdateEHModel"/>
+                <TextBlock Text="Start h:"/>
+                <TextBox x:Name="startHInput" Text="0,01" TextChanged="UpdateEHModel"/>
+                <TextBlock Text="End h:"/>
+                <TextBox x:Name="endHInput" Text="0,2" TextChanged="UpdateEHModel"/>
+                <TextBlock Text="Norm:"/>
+                <ComboBox x:Name="normChoice" SelectionChanged="UpdateEHModel"/>
+            </StackPanel>
+        </GroupBox>
     </Grid>
 </Window>
